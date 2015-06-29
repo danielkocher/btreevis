@@ -1,1 +1,1 @@
-# btreevis
+# btreevis - B+ tree visualization package
