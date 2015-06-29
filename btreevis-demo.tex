@@ -1,0 +1,68 @@
+\documentclass{article}
+
+\usepackage{btreevis}
+
+\begin{document}
+  \newcount\tikzpics
+  \begin{center}
+    \begin{tikzpicture}[
+      BTreeDefault,
+      % Sibling and level distance for 2 levels.
+      % These have to be adapted for almost every B+ tree if
+      %   - the number of pointers per node and/or
+      %   - the matrix content and/or
+      %   - the number of levels and/or
+      %   - the number of children
+      % changes.
+      level 1/.style = {
+        sibling distance = 22em,
+        level distance = 6em
+      },
+      level 2/.style = {
+        sibling distance = 8em,
+        level distance = 6em
+      }
+    ] 
+
+      % Content level 0
+      \SetNoOfPoinersPerNode{4}
+      \CreateBTreeNode{0}{1}{{5}}{\levelZeroNodeOne}
+
+      % Content level 1
+      \CreateBTreeNode{1}{1}{{3}}{\levelOneNodeOne}
+      \CreateBTreeNode{1}{2}{{7, 9}}{\levelOneNodeTwo}
+
+      % Content level 2
+      \CreateBTreeNode{2}{1}{{1, 2}}{\levelTwoNodeOne}
+      \CreateBTreeNode{2}{2}{{3, 4}}{\levelTwoNodeTwo}
+      \CreateBTreeNode{2}{3}{{5, 6}}{\levelTwoNodeThree}
+      \CreateBTreeNode{2}{4}{{7, 8}}{\levelTwoNodeFour}
+      \CreateBTreeNode{2}{5}{{9, 10}}{\levelTwoNodeFive}
+
+      % Use tree environment to draw the nodes (without connecting arrows)
+      \node[BTreeNodeDefault] {\levelZeroNodeOne}
+      child {
+        node[BTreeNodeDefault] {\levelOneNodeOne}
+        child {node[BTreeNodeDefault] {\levelTwoNodeOne}}
+        child {node[BTreeNodeDefault] {\levelTwoNodeTwo}}
+      }
+      child {
+        node[BTreeNodeDefault] {\levelOneNodeTwo}
+        child {node[BTreeNodeDefault] {\levelTwoNodeThree}}
+        child {node[BTreeNodeDefault] {\levelTwoNodeFour}}
+        child {node[BTreeNodeDefault] {\levelTwoNodeFive}}
+      };
+
+      % Connect the nodes
+      % level 0 -> level 1
+      \ConnectBTreeNodes{0}{1}{1}{2}{1}
+      % level 1 -> level 2 (1)
+      \ConnectBTreeNodes{1}{1}{2}{2}{1}
+      % level 1 -> level 2 (2)
+      \ConnectBTreeNodes{1}{2}{2}{3}{3}
+
+      % Connect the leaves
+      \ConnectBTreeLeaves{2}{5}
+    \end{tikzpicture}
+  \end{center}
+\end{document}
