@@ -279,7 +279,7 @@
   % for each value of the comma-separated list
   \foreach \x in #3 {%
     % only insert until the maximum number of pointers per node is reached
-    \ifthenelse{\the\pointerCounter > \noOfPointersPerNode}{\breakforeach}{%
+    \ifthenelse{\not{\the\pointerCounter < \noOfPointersPerNode}}{\breakforeach}{%
       % expand first two arguments upfront (necessary)
       \edef\tmpexpand{{\x}{\the\pointerCounter}}%
       % the \@create@key@matrix@node macros generates a part of the whole node
