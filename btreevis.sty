@@ -97,8 +97,9 @@
 %% DEFAULT STYLES (GLOBAL)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Default style of a B+ tree node.
-% May be overriden by own style but has all important properties.
+% Default style of a B+ tree node. Provides all important properties a B+ tree
+% node should have such that the resulting B^+ tree looks beautiful.
+% May be overridden by an own style.
 \tikzstyle{BTreeNodeDefault} = [
   draw, 
   matrix,
@@ -142,7 +143,7 @@
 % One with a given content (a key node) and one corresponding pointer node
 % (left of the key node). The naming of both key and pointer nodes is done
 % automatically. This macro is used to generate the content of the matrix of
-% nodes for a B+ tree node in the macro \createBTreeNode.
+% nodes for a B+ tree node in the macro \CreateBTreeNode[4].
 %
 % Be careful when modifying this macros: Because the content just generates a
 % part of a matrix no blank lines should be inserted in this macros (this may
@@ -188,7 +189,7 @@
 % Creates the content for an empty node (to be used in a matrix of nodes).
 % The naming of this node is done automatically. This macro is used to generate
 % the content of the matrix of nodes for a B+ tree node in the macro
-% \createBTreeNode.
+% \CreateBTreeNode[4].
 %
 % Naming schema: l#2-n#3-p#1
 %
