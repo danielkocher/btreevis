@@ -79,15 +79,15 @@
 % Used to number pointers and keys consecutively inside a B+ tree node
 \newcount\pointerCounter%
 
-% Used in the connect macros to know where the arrow has to start
+% Used in the connect macros to know where the arrows have to start
 \newcount\pointerNumber%
 
 % Used in the connect macros to hold the number of the current (source) node to
-% connect (node number)
+% connect to
 \newcount\nodeNumber%
 
 % Used in the connect macros to hold the number of the next (destination) node
-% to connect
+% to connect to
 \newcount\nextNodeNumber%
 
 % Used temporarily in the connect macros
@@ -172,7 +172,7 @@
 %%
 \newcommand{\@create@key@matrix@node}[4] {%
   % empty pointer node (left)
-  |(l#3-n#4-p#2) [fill=gray!50]| {\vphantom{1}} \&%
+  |(l#3-n#4-p#2) [fill=gray!50]| {p$_{#3#4#2}$} \&% %{\vphantom{1}} \&%
   % check presence of argument #1
   \ifx&#1&%
     % empty key node (right)
@@ -210,7 +210,7 @@
 %%
 \newcommand{\@create@pointer@matrix@node}[3] {%
   % empty pointer node
-  |(l#2-n#3-p#1) [fill=gray!50]| {\vphantom{1}} \&%
+  |(l#2-n#3-p#1) [fill=gray!50]| {p$_{#2#3#1}$} \&% {\vphantom{1}} \&%
 }%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
