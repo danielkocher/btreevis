@@ -1,0 +1,48 @@
+\documentclass{report}
+
+% Use btreevis package
+\usepackage{btreevis}
+
+\begin{document}
+  \begin{center}
+  \begin{tikzpicture}[
+    % Use default B+ tree style
+    BTreeDefault,
+    % Sibling and level distance for 1 level.
+    % These have to be adapted for almost every B+ tree if
+    %   - the number of pointers per node and/or
+    %   - the matrix content and/or
+    %   - the number of levels and/or
+    %   - the number of children
+    % changes.
+    level 1/.style = {
+      sibling distance = 8em,
+      level distance = 6em
+    }
+  ] 
+
+    % Set number of pointers per node (this should be done always upfront)
+    \SetNoOfPoinersPerNode{4}
+
+    % Generate content of (tree) level 0 (root level)
+    \CreateBTreeNode{0}{1}{{3, 9}}{\levelZeroNodeOne}
+
+    % Generate content of (tree) level 1
+    \CreateBTreeNode{1}{1}{{1, 2}}{\levelOneNodeOne}
+    \CreateBTreeNode{1}{2}{{3, 4, 6}}{\levelOneNodeTwo}
+    \CreateBTreeNode{1}{3}{{9, 10}}{\levelOneNodeThree}
+
+    % Generate B+ tree nodes using the previously generated node contents
+    \node[BTreeNodeDefault] {\levelZeroNodeOne}
+    child { node[BTreeNodeDefault] {\levelOneNodeOne} }
+    child { node[BTreeNodeDefault] {\levelOneNodeTwo} }
+    child { node[BTreeNodeDefault] {\levelOneNodeThree} };
+
+    % Connect B+ tree nodes (vertical, solid arrows)
+    \ConnectBTreeNodes{0}{1}{1}{3}{1}
+
+    % Connect B+ tree leaf nodes (horizontal, dotted arrows)
+    \ConnectBTreeLeaves{1}{3}
+  \end{tikzpicture}
+  \end{center}
+\end{document}
