@@ -323,24 +323,24 @@
 
 %%
 % Connects all pointers of a given node on a given (source) level to all its
-% children on a given (destination level) with an arrow (solid). This only works
+% children of a given (destination level) with an arrow (solid). This only works
 % if the nodes of the B+ tree are named like mentioned in the
 % \@create@key@matrix@node and \@create@pointer@matrix@node, respectively.
 %	
 % Arguments:
-%   #1 ...  Source level number
-%   #2 ...  Source node number
-%   #3 ...  Destination level
-%   #4 ...  Number of nodes
-%   #5 ...  Number of the first node (the node to start with)
+%   #1 ...  Number of source (tree) level
+%   #2 ...  Number of source node (parent node)
+%   #3 ...  Number of destination (tree) level
+%   #4 ...  Number of (child) nodes to be connected with parent
+%   #5 ...  Number of the first (child) node to be connected with parent
 %
 % Example of the usage:
 %   \ConnectBTreeNodes{0}{1}{1}{2}{1}
 %
-%		Generates arrows from node 1 of the top level (0) to all children on the
-%   subsequent level (1). We have 2 children on the subsequent level and the
-%   first node to be connect (on the subsequent level) is node 1. A node
-%   contains 3 search keys, hence it has 4 pointers. The arriving arrows on any
+%		Generates arrows from node 1 of the top level (0) to 2 child nodes of the
+%   subsequent level (1) of the tree. We have 2 children on the subsequent level
+%   and the first node to be connect (on the subsequent level) is node 1. A node
+%   contains 3 search keys, hence it has 4 pointers. The incoming arrows on any
 %   node on the subsequent level arrives at the north center of the node.
 %%
 \newcommand{\ConnectBTreeNodes}[5] {%
