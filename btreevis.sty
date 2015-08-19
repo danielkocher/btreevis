@@ -173,7 +173,7 @@
 %%
 \newcommand{\@create@key@matrix@node}[4] {%
   % empty pointer node (left)
-  |(l#3-n#4-p#2) [fill=gray!50]| {p$_{#3#4#2}$} \&% %{\vphantom{1}} \&%
+  |(l#3-n#4-p#2) [fill=gray!50]| {\vphantom{1}} \&%
   % check presence of argument #1
   \ifx&#1&%
     % empty key node (right)
@@ -211,7 +211,7 @@
 %%
 \newcommand{\@create@pointer@matrix@node}[3] {%
   % empty pointer node
-  |(l#2-n#3-p#1) [fill=gray!50]| {p$_{#2#3#1}$} \&% {\vphantom{1}} \&%
+  |(l#2-n#3-p#1) [fill=gray!50]| {\vphantom{1}} \&%
 }%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -369,20 +369,20 @@
 }%
 
 %%
-%	Connects all leaf nodes on a given (leaf) level with a dotted arrow. The arrow
-% starts at .east of the rightmost node inside the leaf and ends at the .west
+%	Connects all leaf nodes of a given (leaf) level with a dotted arrow. The arrow
+% starts at .east of the rightmost node inside the leaf and ends at .west
 % of the leftmost node inside the next leaf. This only works if the nodes of the
 % B+ tree are named	like mentioned in in the \@create@key@matrix@node and
 % \@create@pointer@matrix@node, respectively.
 %
 % Arguments:
-%   #1 ... level of the leaves
-%   #2 ... number of leaf nodes to be connected
+%   #1 ... Number of the (tree) level of the leaves
+%   #2 ... Number of leaf nodes to be connected
 %
 % Example of the usage:
-%   \ConnectBTreeLeaves{1}{2}
+%   \ConnectBTreeLeaves{2}{5}
 %
-%   Generates arrows between all nodes (here 2) of the leaf level (here 1).
+%   Generates arrows between 5 nodes of the leaf level (here 2).
 %%
 \newcommand{\ConnectBTreeLeaves}[2] {%
   % initialize node number (used to iterate)
