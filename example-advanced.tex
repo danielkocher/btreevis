@@ -204,7 +204,7 @@
   %     the last leaf node!
   %   - A new child has to be added to the tree containing the newly generated
   %     node content.
-  %   - The \ConnectBTreeNodes and \ConnectBTreeLeaves calls have to adjusted
+  %   - The \ConnectBTreeNodes and \ConnectBTreeLeaves calls have to be adjusted
   %     according to the new number of leaf nodes.
   %%%
   \subsection{Insert 6 and 4}
@@ -350,7 +350,7 @@
   %%%
   % Value 8 is added to the third leaf node. This node is overfilled and is split
   % into two nodes. Afterwards, the leaf level of the tree contains of five nodes
-  % but the root node only has four pointers. Thus, an additional level has to
+  % but the root node only has four pointers. Thus, an additional level has to be
   % added to the tree. The tree afterwards consists of
   %   - one root node holding one value, i.e. {5}.
   %   - two nodes on level 1 holding values {3} and {7, 9}, respectively.
@@ -363,17 +363,17 @@
   %   - The level of the existing leaf nodes has to be changed to 2 and also
   %     the variable names should be changed accordingly. Although the renaming
   %     is not obligatory as long as the contents are used correctly afterwards,
-  %     it is still recommended to keep it tracable and avoid unnecessary errors.
+  %     it is still recommended to keep it traceable and avoid errors.
   %   - Two new (inner) nodes have to be generated on level 1. Remember: these
   %     have to be numbered consecutively, i.e. {1}{1} and {1}{2} as the first
-  %     two arguments.
+  %     two arguments, respectively.
   %   - One new leaf nodes has to be generated on level 2, holding the values 7
   %     and 8. This node is generated between the nodes previously numbered 3 and
   %     4. Hence, node number 3 keeps its number, the newly generated node gets
   %     number 4 and the previously content numbered 4 is now node number 5.
   %   - The new level has to be added to the tree environment as well.
   %   - The existing \ConnectBTreeNodes call has to be modified because the root
-  %     node now only has two child nodes. Furthermore, two new calls to
+  %     node now only has two child nodes. Furthermore, two new calls of
   %     \CreateBTreeNodes are necessary to draw the connections between two nodes
   %     of level 1 and the 5 leaf nodes of level 2.
   %   - The \ConnectBTreeLeaves call has to be modified according to the new
