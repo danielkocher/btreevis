@@ -1,0 +1,668 @@
+%%%
+% This advanced example of a B+ tree is supposed to help creating/modifying B+
+% trees using the btreevis package. It covers all possibilities of extending and
+% shrinking a B+ tree. Hence, it is a good way to learn and understand what are
+% the necessary steps to create and modify B+ trees, i.e. which macros/styles
+% have to be used/modified.
+%
+% All sections and subsections provide a header describing what has to be done 
+% and why. Each (sub-)section contains exactly a single tikzpicture containing
+% inline comments to describe single parts of the header description.
+%
+% The (sub-)sections are described in terms of the (sub-)section before. So, if
+% a change is described, it is a change with respect to the (sub-)section before.
+%%%
+
+\documentclass{article}
+
+\usepackage{hyperref}
+
+% Use btreevis package.
+\usepackage{btreevis}
+
+\begin{document}
+  \tableofcontents
+  \clearpage
+
+  %%%
+  % Create an intially empty B+ tree with one node containing 3 key cells and
+  % 4 pointer cells.
+  %%%
+  \section{Initial B$^+$ tree}  
+  \begin{center}
+  \begin{tikzpicture}[
+    BTreeDefault,             % Use default B+ tree style.
+    scale = 1                 % No scaling necessary.
+  ] 
+    % Set number of pointers per node (this should be done always upfront).
+    \SetNoOfPoinersPerNode{4}
+  
+    % Generate (empty) content of (tree) level 0 (root level).
+    \CreateBTreeNode{0}{1}{{}}{\levelZeroNodeOne}
+
+    % Generate B+ tree with a single node (no content).
+    \node[BTreeNodeDefault] {\levelZeroNodeOne};
+
+    % As there is just a single node by now, no nodes need to be connected.
+  \end{tikzpicture}
+  \end{center}
+
+  %%%
+  % This section describes all possibilities of extending a B+ tree:
+  %   - Add values to an existing node when a node is not yet full.
+  %   - Add values to an existing node when a node is already full.
+  %   - Add a new level to the B+ tree and connect the new nodes/leaves.
+  %   - Add a new node to an existing level and connect the new node.
+  %%%
+  \section{Extending the B$^+$ tree}
+
+  %%%
+  % Values 3 and 9 are added to the existing (empty) node.
+  % Hence, the node is neither full before nor after the inserts.
+  % 
+  % This is probably the easiest thing to do: we simply add the values 3 and 9
+  % to the comma-separated list of values (which is empty by now) as third
+  % argument of the \CreateBTreeNode macro. The third values is treated as empty
+  % and thus the cell will also have no content in it.
+  %%% 
+  \subsection{Insert 3 and 9}
+  \begin{center}
+  \begin{tikzpicture}[
+    BTreeDefault,             % Use default B+ tree style.
+    scale = 1                 % No scaling necessary.
+  ] 
+    % Set number of pointers per node (this should be done always upfront).
+    \SetNoOfPoinersPerNode{4}
+  
+    % Generate content of (tree) level 0 (root level).
+    % Here we add 3 and 9 to the comma-separated list, i.e. {3, 9}.
+    \CreateBTreeNode{0}{1}{{3, 9}}{\levelZeroNodeOne}
+
+    % Generate B+ tree with a single node.
+    % No change here because we still have only a single node.
+    \node[BTreeNodeDefault] {\levelZeroNodeOne};
+
+    % As there is still just a single node by now, no nodes need to be connected.
+  \end{tikzpicture}
+  \end{center}
+
+  %%%
+  % Value 10 is added to the existing node containing two values by now.
+  % The node is full afterwards.
+  %
+  % As the workflow is the same, this should be as easy to understand as the
+  % last step: we again add the value 10 to the comma-separated list of values.
+  %%%
+  \subsection{Insert 10}
+  \begin{center}
+  \begin{tikzpicture}[
+    BTreeDefault,             % Use default B+ tree style.
+    scale = 1                 % No scaling necessary.
+  ] 
+    % Set number of pointers per node (this should be done always upfront).
+    \SetNoOfPoinersPerNode{4}
+  
+    % Generate content of (tree) level 0 (root level).
+    % Here we add 10 to the comma-separated list, i.e. {3, 9, 10}.
+    \CreateBTreeNode{0}{1}{{3, 9, 10}}{\levelZeroNodeOne}
+
+    % Generate B+ tree with a single node.
+    % No change here because we still have only a single node.
+    \node[BTreeNodeDefault] {\levelZeroNodeOne};
+
+    % As there is still just a single node by now, no nodes need to be connected.
+  \end{tikzpicture}
+  \end{center}
+
+  %%%
+  % Values 1 and 2 are added to the existing node which is already full. Because
+  % the node is already full we need to split the node into two and add another
+  % level to the tree.
+  %
+  % Several things have to be done:
+  %   - Add two new calls of the \CreateBTreeNode macro to generate a total of 
+  %     three node contents: one root node and its two child nodes.
+  %   - When generating the tree, we need two new 'child' clauses to utilize the
+  %     tree environment of TikZ to position the nodes properly. We use the newly
+  %     generated contents as node contents.
+  %   - As we have two tree levels, the \ConnectBTreeNodes and the
+  %     \ConnectBTreeLeaves macros have to be used to connect the nodes in a
+  %     proper way. Hence, we introduce one call for each of these two macros.
+  %   - Because of the two tree levels it is also recommended to add a style for
+  %     the new level of the tree.
+  %%%
+  \subsection{Insert 1 and 2}
+  \begin{center}
+  \begin{tikzpicture}[
+    BTreeDefault,             % Use default B+ tree style.
+    scale = 1,                % No scaling necessary.
+    level 1/.style = {        % Level 1 tree style recommended.
+      sibling distance = 8em,
+      level distance = 6em
+    }
+  ] 
+    % Set number of pointers per node (this should be done always upfront).
+    \SetNoOfPoinersPerNode{4}
+  
+    % Generate content of (tree) level 0 (root level).
+    % Here we just have a single value (9) in the comma-separated list because
+    % we only have two subsequent nodes.
+    \CreateBTreeNode{0}{1}{{9}}{\levelZeroNodeOne}
+
+    % Generate content of (tree) level 1.
+    % We add two new calls of the \CreateBTreeNode macro to generate the contents
+    % of the subsequent nodes. One node contains three values, i.e. the comma-
+    % separated list is {1, 2, 3}, and the second node contains two values, i.e.
+    % {9, 10}.
+    % We also have to provide the correct level number (1) as first argument of
+    % both calls as well as the correct node number for each call as second
+    % argument, i.e. 1 and 2 respectively.
+    % As last argument we need to specify two new variables in which the
+    % respective node content is stored.
+    \CreateBTreeNode{1}{1}{{1, 2, 3}}{\levelOneNodeOne}
+    \CreateBTreeNode{1}{2}{{9, 10}}{\levelOneNodeTwo}
+
+    % Generate B+ tree with one root and two child nodes.
+    % Here we add two 'child' clauses generating two new tree nodes. Because
+    % these nodes are on the subsequent tree level (level number 1), we use the
+    % two contents generated for this level as node contents.
+    \node[BTreeNodeDefault] {\levelZeroNodeOne}
+    child { node[BTreeNodeDefault] {\levelOneNodeOne} }
+    child { node[BTreeNodeDefault] {\levelOneNodeTwo} };
+
+    % Because the tree now consists of three nodes and two levels, we need to
+    % use the \ConnectBTreeNodes macro to connect all the nodes vertically.
+    % We connect from level 0 (first argument) node 1 (second argument) to
+    % level 1 (third argument). On level 1 we have 2 nodes to connect (fourth
+    % argument) and the node to start with on level 1 has number 1 (fifth
+    % argument).
+    \ConnectBTreeNodes{0}{1}{1}{2}{1}
+
+    % Because the tree now consists of more than one leaf node, we need to
+    % use the \ConnectBTreeLeaves macro to connect all the leaves horizontally.
+    % We connect all leaf nodes of level 1 (first argument) and there are 2 leaf
+    % nodes to connect. Remember: the \ConnectBTreeLeaves macro always starts
+    % connecting from node number 1 of the supplied level, so no node to start
+    % with has to be defined.
+    \ConnectBTreeLeaves{1}{2}
+  \end{tikzpicture}
+  \end{center}
+
+  %%%
+  % Values 6 and 4 are added to the first node of the B+ tree. Hence, this node
+  % is overfilled and has to be split into two nodes. So another node must be
+  % added to the existing leaf level of the tree.
+  %
+  % To accomplish this, the following steps have to be done:
+  %   - The root node has to be modified. Because we add another node on the
+  %     subsequent level, the root node needs to hold another value, i.e. 3.
+  %   - Obviously, one new call to the \CreateBTreeNode is necessary to generate
+  %     the content of the new leaf node. Thus, also a new variable to hold this
+  %     content has to be declared. Furthermore, the node is located between the
+  %     two existing leaf nodes. Because of the consecutive numbering of the
+  %     nodes, we also have to provide the correct node numbers for the new and
+  %     the last leaf node!
+  %   - A new child has to be added to the tree containing the newly generated
+  %     node content.
+  %   - The \ConnectBTreeNodes and \ConnectBTreeLeaves calls have to adjusted
+  %     according to the new number of leaf nodes.
+  %%%
+  \subsection{Insert 6 and 4}
+  \begin{center}
+  \begin{tikzpicture}[
+    BTreeDefault,             % Use default B+ tree style.
+    scale = 1,                % No scaling necessary.
+    level 1/.style = {        % Level 1 tree style recommended.
+      sibling distance = 8em,
+      level distance = 6em
+    }
+  ] 
+    % Set number of pointers per node (this should be done always upfront).
+    \SetNoOfPoinersPerNode{4}
+  
+    % Generate content of (tree) level 0 (root level).
+    % Here we have to add a value (3) to the comma-separated list.
+    \CreateBTreeNode{0}{1}{{3, 9}}{\levelZeroNodeOne}
+
+    % Generate content of (tree) level 1.
+    % We add one new call of the \CreateBTreeNode macro to generate the content
+    % one additional leaf node. Because of the splitting, the new node is located
+    % between the two already existing leaves. Hence, we also have to adjust the
+    % node numbers of this level: the previously node 2 now has node number 3 and
+    % the new leaf node gets node number 2. Also a new variable is introduced and
+    % the variables are used according to the node numbering.
+    % Summary:
+    %   - Node 1 holds values 1 and 2.
+    %   - Node 2 holds values 3, 4 and 6.
+    %   - Node 3 holds values 9 and 10.
+    \CreateBTreeNode{1}{1}{{1, 2}}{\levelOneNodeOne}
+    \CreateBTreeNode{1}{2}{{3, 4, 6}}{\levelOneNodeTwo}
+    \CreateBTreeNode{1}{3}{{9, 10}}{\levelOneNodeThree}
+
+    % Generate B+ tree with one root and three child nodes.
+    % Here we add another 'child' clauses generating one new tree node. As before
+    % we use the previously generated node contents.
+    \node[BTreeNodeDefault] {\levelZeroNodeOne}
+    child { node[BTreeNodeDefault] {\levelOneNodeOne} }
+    child { node[BTreeNodeDefault] {\levelOneNodeTwo} }
+    child { node[BTreeNodeDefault] {\levelOneNodeThree} };
+
+    % Because the root node now has three child nodes, we need to modify the
+    % the \ConnectBTreeNodes call accordingly.
+    % We connect from level 0 (first argument) node 1 (second argument) to
+    % level 1 (third argument). On level 1 we now have 3 nodes to connect (fourth
+    % argument) and the node to start with on level 1 has number 1 (fifth
+    % argument).
+    \ConnectBTreeNodes{0}{1}{1}{3}{1}
+
+    % Because the tree now consists of one more leaf node, we also need to
+    % use the \ConnectBTreeLeaves macro accordingly.
+    % We connect all leaf nodes of level 1 (first argument) and now there are 3
+    % of those to connect.
+    \ConnectBTreeLeaves{1}{3}
+  \end{tikzpicture}
+  \end{center}
+
+  %%%
+  % Values 5 and 7 are added to the second node of the B+ tree. Hence, this node
+  % is overfilled and has to be split into two nodes. So another node must be
+  % added to the existing leaf level of the tree.
+  %
+  % To accomplish this, the following steps have to be done:
+  %   - The root node has to be modified. Because we add another node on the
+  %     subsequent level, the root node needs to hold another value, i.e. 5.
+  %   - Once again, a new call to the \CreateBTreeNode is necessary to generate
+  %     the content of the new leaf node. Thus, also a new variable to hold this
+  %     content has to be declared. Furthermore, the node is located between the
+  %     second and the third existing leaf nodes. Because of the consecutive
+  %     numbering of the nodes, we also have to adjust the node numbers for the
+  %     new and all following leaf nodes.
+  %   - A new child has to be added to the tree containing the newly generated
+  %     node content.
+  %   - The \ConnectBTreeNodes and \ConnectBTreeLeaves calls have to adjusted
+  %     according to the new number of leaf nodes.
+  %   - The tikzpicture options are changed as well: the sibling distance of
+  %     level 1 is reduced to 7em and the level distance is increased to 8em.
+  %     This is not obligatory but playing around with the sibling and level
+  %     distances often helps to make the B+ tree look more beautiful (e.g. the
+  %     nodes do not overlap or the orientation of the arrows is better).
+  %%%
+  \subsection{Insert 5 and 7}
+  \begin{center}
+  \begin{tikzpicture}[
+    BTreeDefault,             % Use default B+ tree style.
+    scale = 1,                % No scaling necessary.
+    level 1/.style = {        % Level 1 tree style recommended.
+      sibling distance = 7em, % Smaller distance betweens siblings.
+      level distance = 8em    % Larger distance between levels.
+    }
+  ] 
+    % Set number of pointers per node (this should be done always upfront).
+    \SetNoOfPoinersPerNode{4}
+  
+    % Generate content of (tree) level 0 (root level).
+    % Here we have to add a value (5) to the comma-separated list.
+    \CreateBTreeNode{0}{1}{{3, 5, 9}}{\levelZeroNodeOne}
+
+    % Generate content of (tree) level 1.
+    % We add one new call of the \CreateBTreeNode macro to generate the content
+    % one additional leaf node. Because of the splitting, the new node is located
+    % between the second and the third existing leaves. Hence, we also have to
+    % adjust the node numbers of this level: the previously node 3 now has node
+    % number 4 and the new leaf node gets node number 3. Node number 2 keeps its
+    % number. Also a new variable is introduced and the variables are used
+    % according to the node numbering.
+    % Summary:
+    %   - Node 1 holds values 1 and 2.
+    %   - Node 2 holds values 3 and 4.
+    %   - Node 3 holds values 5, 6 and 7.
+    %   - Node 4 holds values 9 and 10.
+    \CreateBTreeNode{1}{1}{{1, 2}}{\levelOneNodeOne}
+    \CreateBTreeNode{1}{2}{{3, 4}}{\levelOneNodeTwo}
+    \CreateBTreeNode{1}{3}{{5, 6, 7}}{\levelOneNodeThree}
+    \CreateBTreeNode{1}{4}{{9, 10}}{\levelOneNodeFour}
+
+    % Generate B+ tree with one root and four child nodes.
+    % Here we add another 'child' clauses generating one new tree node. As before
+    % we use the previously generated node contents.
+    \node[BTreeNodeDefault] {\levelZeroNodeOne}
+    child { node[BTreeNodeDefault] {\levelOneNodeOne} }
+    child { node[BTreeNodeDefault] {\levelOneNodeTwo} }
+    child { node[BTreeNodeDefault] {\levelOneNodeThree} }
+    child { node[BTreeNodeDefault] {\levelOneNodeFour} };
+
+    % Because the root node now has four child nodes, we need to modify the
+    % the \ConnectBTreeNodes call accordingly.
+    % We connect from level 0 (first argument) node 1 (second argument) to
+    % level 1 (third argument). On level 1 we now have 4 nodes to connect (fourth
+    % argument) and the node to start with on level 1 has number 1 (fifth
+    % argument).
+    \ConnectBTreeNodes{0}{1}{1}{4}{1}
+
+    % Because the tree now consists of one more leaf node, we also need to
+    % use the \ConnectBTreeLeaves macro accordingly.
+    % We connect all leaf nodes of level 1 (first argument) and now there are 4
+    % of those to connect.
+    \ConnectBTreeLeaves{1}{4}
+  \end{tikzpicture}
+  \end{center}
+
+  %%%
+  % Value 8 is added to the third leaf node. This node is overfilled and is split
+  % into two nodes. Afterwards, the leaf level of the tree contains of five nodes
+  % but the root node only has four pointers. Thus, an additional level has to
+  % added to the tree. The tree afterwards consists of
+  %   - one root node holding one value, i.e. {5}.
+  %   - two nodes on level 1 holding values {3} and {7, 9}, respectively.
+  %   - five leaf nodes on level 2 holding their respective values.
+  %
+  % This is one of the hardest modifications of an existing B+ tree. The
+  % following steps are necessary:
+  %   - The root node has to be modified. Because we add another level, the root
+  %     node now holds the smallest value of its right subtree, i.e. 5.
+  %   - The level of the existing leaf nodes has to be changed to 2 and also
+  %     the variable names should be changed accordingly. Although the renaming
+  %     is not obligatory as long as the contents are used correctly afterwards,
+  %     it is still recommended to keep it tracable and avoid unnecessary errors.
+  %   - Two new (inner) nodes have to be generated on level 1. Remember: these
+  %     have to be numbered consecutively, i.e. {1}{1} and {1}{2} as the first
+  %     two arguments.
+  %   - One new leaf nodes has to be generated on level 2, holding the values 7
+  %     and 8. This node is generated between the nodes previously numbered 3 and
+  %     4. Hence, node number 3 keeps its number, the newly generated node gets
+  %     number 4 and the previously content numbered 4 is now node number 5.
+  %   - The new level has to be added to the tree environment as well.
+  %   - The existing \ConnectBTreeNodes call has to be modified because the root
+  %     node now only has two child nodes. Furthermore, two new calls to
+  %     \CreateBTreeNodes are necessary to draw the connections between two nodes
+  %     of level 1 and the 5 leaf nodes of level 2.
+  %   - The \ConnectBTreeLeaves call has to be modified according to the new
+  %     level of the leaf nodes and the increased number of leaves.
+  %   - The tikzpicture options are changed as well:
+  %       - The sibling distance of level 1 is increased to 18em. This is
+  %         recommended because of the new level. The sibling distance has to
+  %         be increased almost every time when adding a new level.
+  %       - The level distance of level 1 is decreased to 6em. This is just a
+  %         minor adjustment.
+  %       - A new style for level 2 is introduced.
+  %       - The whole tikzpicture is scaled down to 0.7 now because the tree got
+  %         higher and wider.
+  %       - A new style is introduced to scale the nodes too. This is necessary
+  %         because nodes have to be scaled in TikZ separately. So, we just use
+  %         the BTreeNodeDefault style and add a scale clause for the nodes
+  %         afterwards.
+  %     This is not obligatory but playing around with the sibling and level
+  %     distances often helps to make the B+ tree look more beautiful (e.g. the
+  %     nodes do not overlap or the orientation of the arrows is better).
+  %%%
+  \subsection{Insert 8}
+  \begin{center}
+  \begin{tikzpicture}[
+    BTreeDefault,             % Use default B+ tree style.
+    scale = 0.7,              % Scaling to 0.7 necessary.
+    level 1/.style = {        % Level 1 tree style recommended.
+      sibling distance = 18em,% Larger distance betweens siblings.
+      level distance = 6em    % Smaller distance between levels.
+    },
+    level 2/.style = {        % Level 2 tree style recommended.
+      sibling distance = 7em, % Just like the style used for level 1 previously.
+      level distance = 6em
+    },
+    BTreeNodeScaled/.style = {% New B+ tree node style.
+      BTreeNodeDefault,       % Uses the predefined B+ tree node style.
+      nodes = { scale = 0.7 } % Scales all nodes to 0.7.
+    }
+  ] 
+    % Set number of pointers per node (this should be done always upfront).
+    \SetNoOfPoinersPerNode{4}
+  
+    % Generate content of (tree) level 0 (root level).
+    % Because a new level is added, the root has to hold the smallest value of
+    % its right subtree, i.e. 5.
+    \CreateBTreeNode{0}{1}{{5}}{\levelZeroNodeOne}
+
+    % Generate content of (tree) level 1.
+    % Here we generate the new level of the B+ tree consisting of two nodes.
+    % Because we push down the leaf level by 1, the new level has level number 1.
+    % Numbering is done consecutively, as always, starting with node number 1.
+    % The names of the variables are chosen as before to avoid any confusion.
+    % Summary:
+    %   - Node 1 holds values 3.
+    %   - Node 2 holds values 7 and 9.
+    \CreateBTreeNode{1}{1}{{3}}{\levelOneNodeOne}
+    \CreateBTreeNode{1}{2}{{7, 9}}{\levelOneNodeTwo}
+
+    % Generate content of (tree) level 2.
+    % We add one new call of the \CreateBTreeNode macro to generate the content
+    % one additional leaf node. Because of the splitting, the new node is located
+    % between the third and the fourth existing leaves. Hence, we also have to
+    % adjust the node numbers of this level: the previously node 4 now has node
+    % number 5 and the new leaf node gets node number 4. Node number 3 keeps its
+    % number. Also a new variable is introduced and the variables are used
+    % according to the node numbering.
+    % Because a new level is added, the leaves are now located at level number 2.
+    % This is changed in the first argument for all leaf nodes accordingly.
+    % Also the names of the variables are changed accordingly to avoid confusion.
+    % Summary:
+    %   - Node 1 holds values 1 and 2.
+    %   - Node 2 holds values 3 and 4.
+    %   - Node 3 holds values 5 and 6.
+    %   - Node 4 holds values 7 and 8.
+    %   - Node 5 holds values 9 and 10.
+    \CreateBTreeNode{2}{1}{{1, 2}}{\levelTwoNodeOne}
+    \CreateBTreeNode{2}{2}{{3, 4}}{\levelTwoNodeTwo}
+    \CreateBTreeNode{2}{3}{{5, 6}}{\levelTwoNodeThree}
+    \CreateBTreeNode{2}{4}{{7, 8}}{\levelTwoNodeFour}
+    \CreateBTreeNode{2}{5}{{9, 10}}{\levelTwoNodeFive}
+
+    % Generate B+ tree with one root, two inner nodes and five leaf nodes.
+    % Here we add the level according to the new structure of the B+ tree.
+    \node[BTreeNodeScaled] {\levelZeroNodeOne}
+    child {
+      node[BTreeNodeScaled] {\levelOneNodeOne}
+      child { node[BTreeNodeScaled] {\levelTwoNodeOne} }
+      child { node[BTreeNodeScaled] {\levelTwoNodeTwo} }
+    }
+    child {
+      node[BTreeNodeScaled] {\levelOneNodeTwo}
+      child { node[BTreeNodeScaled] {\levelTwoNodeThree} }
+      child { node[BTreeNodeScaled] {\levelTwoNodeFour} }
+      child { node[BTreeNodeScaled] {\levelTwoNodeFive} }
+    };
+
+    % Connect nodes level 0 -> level 1.
+    % Because the root now only has two child nodes, we just change the fourth
+    % argument accordingly.
+    \ConnectBTreeNodes{0}{1}{1}{2}{1}
+    % Connect nodes level 1 node 1 -> level 2 nodes 1 and 2.
+    % Because we added a new level, we also need to add additional calls to the
+    % \ConnectBTreeNodes macro.
+    % This call is used to connect the first node of level 1 with its two child
+    % nodes of level 2, starting from node number 1 of level 2. So, the nodes
+    % 1 and 2 of level 1 are child nodes of node 1 of level 1.
+    \ConnectBTreeNodes{1}{1}{2}{2}{1}
+    % Connect nodes level 1 node 2 -> level 2 nodes 3, 4 and 5.
+    % This call is used to connect the second node of level 1 with its three
+    % child nodes of level 2, starting from node number 3 of level 2. So, the
+    % nodes 3, 4 and 5 of level 2 are child nodes of node 2 of level 1.
+    \ConnectBTreeNodes{1}{2}{2}{3}{3}
+
+    % Because the leaf nodes are now located at level 2 and there is one more
+    % leaf node, we need to adjust the \ConnectBTreeLeaves call.
+    % We connect all leaf nodes of level 2 (first argument) and now there are 5
+    % of those to connect.
+    \ConnectBTreeLeaves{2}{5}
+  \end{tikzpicture}
+  \end{center}
+
+  %%%
+  % This section describes all possibilities of shrinking a B+ tree:
+  %   - Delete a value in a leaf node, delete corresponding value in inner node
+  %     accordingly and connect nodes/leaves
+  %   - Change a value in a node/leaf and connect nodes/leaves
+  %   - Delete a whole level of the B+ tree and connect nodes/leaves accordingly
+  %%%
+  \section{Shrinking the B$^+$ tree}
+
+  %%%
+  % 
+  %%%
+  \subsection{Delete 7}
+  \begin{center}
+  \begin{tikzpicture}[
+    BTreeDefault,
+    scale = 0.7,
+    level 1/.style = {
+      sibling distance = 18em,
+      level distance = 6em
+    },
+    level 2/.style = {
+      sibling distance = 7em,
+      level distance = 6em
+    },
+    BTreeNodeScaled/.style = {
+      BTreeNodeDefault,
+      nodes = { scale = 0.7 }
+    }
+  ] 
+    
+    \SetNoOfPoinersPerNode{4}
+  
+    
+    \CreateBTreeNode{0}{1}{{5}}{\levelZeroNodeOne}
+
+    
+    \CreateBTreeNode{1}{1}{{3}}{\levelOneNodeOne}
+    \CreateBTreeNode{1}{2}{{9}}{\levelOneNodeTwo}
+
+    
+    \CreateBTreeNode{2}{1}{{1, 2}}{\levelTwoNodeOne}
+    \CreateBTreeNode{2}{2}{{3, 4}}{\levelTwoNodeTwo}
+    \CreateBTreeNode{2}{3}{{5, 6, 8}}{\levelTwoNodeThree}
+    \CreateBTreeNode{2}{4}{{9, 10}}{\levelTwoNodeFour}
+
+    
+    \node[BTreeNodeScaled] {\levelZeroNodeOne}
+    child {
+      node[BTreeNodeScaled] {\levelOneNodeOne}
+      child { node[BTreeNodeScaled] {\levelTwoNodeOne} }
+      child { node[BTreeNodeScaled] {\levelTwoNodeTwo} }
+    }
+    child {
+      node[BTreeNodeScaled] {\levelOneNodeTwo}
+      child { node[BTreeNodeScaled] {\levelTwoNodeThree} }
+      child { node[BTreeNodeScaled] {\levelTwoNodeFour} }
+    };
+
+    
+    \ConnectBTreeNodes{0}{1}{1}{2}{1}
+    
+    \ConnectBTreeNodes{1}{1}{2}{2}{1}
+    
+    \ConnectBTreeNodes{1}{2}{2}{2}{3}
+
+    
+    \ConnectBTreeLeaves{2}{4}
+  \end{tikzpicture}
+  \end{center}
+
+  %%%
+  % 
+  %%%
+  \subsection{Delete 10}
+  \begin{center}
+  \begin{tikzpicture}[
+    BTreeDefault,
+    scale = 0.7,
+    level 1/.style = {
+      sibling distance = 18em,
+      level distance = 6em
+    },
+    level 2/.style = {
+      sibling distance = 7em,
+      level distance = 6em
+    },
+    BTreeNodeScaled/.style = {
+      BTreeNodeDefault,
+      nodes = { scale = 0.7 }
+    }
+  ] 
+    
+    \SetNoOfPoinersPerNode{4}
+  
+    
+    \CreateBTreeNode{0}{1}{{5}}{\levelZeroNodeOne}
+
+    
+    \CreateBTreeNode{1}{1}{{3}}{\levelOneNodeOne}
+    \CreateBTreeNode{1}{2}{{8}}{\levelOneNodeTwo}
+
+    
+    \CreateBTreeNode{2}{1}{{1, 2}}{\levelTwoNodeOne}
+    \CreateBTreeNode{2}{2}{{3, 4}}{\levelTwoNodeTwo}
+    \CreateBTreeNode{2}{3}{{5, 6}}{\levelTwoNodeThree}
+    \CreateBTreeNode{2}{4}{{8, 9}}{\levelTwoNodeFour}
+
+    
+    \node[BTreeNodeScaled] {\levelZeroNodeOne}
+    child {
+      node[BTreeNodeScaled] {\levelOneNodeOne}
+      child { node[BTreeNodeScaled] {\levelTwoNodeOne} }
+      child { node[BTreeNodeScaled] {\levelTwoNodeTwo} }
+    }
+    child {
+      node[BTreeNodeScaled] {\levelOneNodeTwo}
+      child { node[BTreeNodeScaled] {\levelTwoNodeThree} }
+      child { node[BTreeNodeScaled] {\levelTwoNodeFour} }
+    };
+
+    
+    \ConnectBTreeNodes{0}{1}{1}{2}{1}
+    
+    \ConnectBTreeNodes{1}{1}{2}{2}{1}
+    
+    \ConnectBTreeNodes{1}{2}{2}{2}{3}
+
+    
+    \ConnectBTreeLeaves{2}{4}
+  \end{tikzpicture}
+  \end{center}
+
+  %%%
+  % 
+  %%%
+  \subsection{Delete 6}
+  \begin{center}
+  \begin{tikzpicture}[
+    BTreeDefault,
+    scale = 1,
+    level 1/.style = {
+      sibling distance = 8em,
+      level distance = 8em
+    }
+  ] 
+    
+    \SetNoOfPoinersPerNode{4}
+  
+    
+    \CreateBTreeNode{0}{1}{{3, 5}}{\levelZeroNodeOne}
+
+    
+    \CreateBTreeNode{1}{1}{{1, 2}}{\levelOneNodeOne}
+    \CreateBTreeNode{1}{2}{{3, 4}}{\levelOneNodeTwo}
+    \CreateBTreeNode{1}{3}{{5, 8, 9}}{\levelOneNodeThree}
+
+    
+    \node[BTreeNodeDefault] {\levelZeroNodeOne}
+    child { node[BTreeNodeDefault] {\levelOneNodeOne} }
+    child { node[BTreeNodeDefault] {\levelOneNodeTwo} }
+    child { node[BTreeNodeDefault] {\levelOneNodeThree} };
+
+    
+    \ConnectBTreeNodes{0}{1}{1}{3}{1}
+
+    
+    \ConnectBTreeLeaves{1}{3}
+  \end{tikzpicture}
+  \end{center}
+\end{document}
