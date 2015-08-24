@@ -513,8 +513,8 @@
   % key has to be removed, i.e. 7.
   %
   % These are the necessary steps:
-  %   - One of the existing \CreateBTreeNode call has to be removed, preferably
-  %     node number 5 because we only have four leaf nodes afterwards.
+  %   - One of the existing \CreateBTreeNode calls has to be removed, preferably
+  %     the one of node number 5 because we only have four leaf nodes afterwards.
   %   - The values of node number 3 need to be changed. In essence, value 8 has
   %     to be added to the comma-separated list supplied as third argument.
   %   - Because we removed one \CreateBTreeNode call, we have to remove one child
@@ -627,8 +627,9 @@
   %   - Insert value 8 into the content of the last leaf node (\levelTwoNodeFour)
   %     in front of value 9.
   %   - The value of the parent node has to be changed to 8 (formerly 9).
-  %   - The \ConnectBTreeNodes and \ConnectBTreeLeaves need not to be changed
-  %     because the number of nodes does not change, only their values.
+  %   - The \ConnectBTreeNodes and \ConnectBTreeLeaves calls need not to be
+  %     changed because the number of nodes does not change, only their
+  %     values.
   %   - As before the tikzpicture options are not altered (not obligatory). 
   %%%
   \subsection{Delete 10}
@@ -711,9 +712,9 @@
   % this leaf consists of an insufficient number of keys and is merged with its
   % right sibling (because no left sibling exists). After this merge, the parent
   % of the resulting node would just have a single child node, which is not
-  % B+ tree compliant. Hence, we need to remove the whole mid level of the tree
-  % because three leaf nodes are covered by a single root node with two keys and
-  % three pointers. So, the resulting B+ tree consists of:
+  % B+ tree compliant. Hence, we need to remove the whole mid level (level 1) of
+  % the tree because three leaf nodes are covered by a single root node with two
+  % keys and three pointers. So, the resulting B+ tree consists of:
   %   - A root node holding the values 3 and 5 (smallest value of the respective
   %     right subtree).
   %   - Three leaf nodes holding the values {1, 2}, {3, 4} and {5, 8, 9},
