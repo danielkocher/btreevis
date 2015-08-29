@@ -1,5 +1,4 @@
 # B<sup>+</sup> tree visualization package
-
 Drawing *beautiful* B<sup>+</sup> trees in `TeX` using the standard `TikZ` features is cumbersome.  
 This package tackles this problem by providing macros to simplify drawing B<sup>+</sup> trees in `TikZ`.
 
@@ -10,9 +9,14 @@ This package provides macros to generate the B<sup>+</sup> tree nodes in a simpl
 
 The explanation of the B<sup>+</sup> tree characteristics are skipped here. One may study B<sup>+</sup> trees e.g. on [Wikipedia](https://en.wikipedia.org/wiki/B%2B_tree).
 
-# Documentation
+# Example result
+![alt text](https://github.com/danielkocher/btreevis/blob/master/example-beautiful-btree.png "An example of a beautiful B+ tree")
 
-Some documentation is provided by this README althought internal macros and counters are skipped (by now). But there is also a full documentation inside the `btreevis.sty` file.  
+# Full Examples
+The `btreevis` package consists of two full example `TeX` files to show how to use the package. These two files contain a full documentation describing each step separately (what is done and why it is necessary).
+
+# Documentation
+Some documentation is provided by this README althought internal macros and counters are skipped (by now). But a full and detailed documentation is located inside the `btreevis.sty` file.  
 Moreover, there are two full documented example `TeX` files given, a simple and an advanced one, to should the usage of the `btreevis` package.  
 
 ## Required `TeX` packages
@@ -120,8 +124,3 @@ The macros provided by the `btreevis` package are just to generate the content o
     \node[BTreeNodeDefault] {\levelZeroNodeOne}
     child { node[BTreeNodeDefault] {\levelOneNodeOne} }
     child { node[BTreeNodeDefault] {\levelOneNodeTwo} };
-
-
-# Full Examples
-
-The `btreevis` package consists of two full example `TeX` files to show how to use the package. These two files contain a full documentation describing each step separately (what is done and why it is necessary).
