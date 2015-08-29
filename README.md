@@ -1,9 +1,9 @@
-# `btreevis` - B<sup>+</sup> tree visualization package
+# B<sup>+</sup> tree visualization package
 
 Drawing *beautiful* B<sup>+</sup> trees in `TeX` using the standard `TikZ` features is cumbersome.  
 This package tackles this problem by providing macros to simplify drawing B<sup>+</sup> trees in `TikZ`.
 
-This package utilizes the standard tree environment of `TikZ` for the placement of the B<sup>+</sup> tree nodes.  
+The `btreevis` package utilizes the standard tree environment of `TikZ` for the placement of the B<sup>+</sup> tree nodes.  
 The edges of the tree environment are disabled by the default B<sup>+</sup> tree style (`BTreeDefault`) because it does not suffice to get beautiful connecting edges. This is mostly because of the B<sup>+</sup> tree characteristics: a node has multiple pointers (and keys of course) each of which is connected to a node on the subsequent level of the B<sup>+</sup> tree.  
 
 This package provides macros to generate the B<sup>+</sup> tree nodes in a simple way as well as macros to draw B<sup>+</sup> tree edges in a proper way.  
