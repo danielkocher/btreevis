@@ -124,3 +124,9 @@ The macros provided by the `btreevis` package are just to generate the content o
     \node[BTreeNodeDefault] {\levelZeroNodeOne}
     child { node[BTreeNodeDefault] {\levelOneNodeOne} }
     child { node[BTreeNodeDefault] {\levelOneNodeTwo} };
+
+# Issues/TODOs
+
+* Make it robust, i.e. use LaTeX commands as much as possible:
+    * use `\newcommand`/`\renewcommand`/`\providecommand` instead of `\def`,
+    * use `\CheckCommand`
