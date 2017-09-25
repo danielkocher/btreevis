@@ -45,7 +45,7 @@
 %
 %               There are two macros for internal usage which may be used
 %               outside this package but at your own risk.
-% 
+%
 %               Please contact me using the email at the top of this header for
 %               bugs, criticism and comments.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -57,8 +57,8 @@
 %% PACKAGES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\RequirePackage{tikz}     
-\RequirePackage{ifthen}   
+\RequirePackage{tikz}
+\RequirePackage{ifthen}
 \RequirePackage{etoolbox}
 %\RequirePackage{calc}
 
@@ -101,7 +101,7 @@
 % node should have such that the resulting B^+ tree looks beautiful.
 % May be overridden by an own style.
 \tikzstyle{BTreeNodeDefault} = [
-  draw, 
+  draw,
   matrix,
   matrix of nodes,
   % must be used; otherwise the matrix content generation does not work
@@ -116,8 +116,8 @@
     % workaround to make nodes look better;
     % better in the sense that all nodes in the matrix of nodes have the same
     % height and depth independent of their content
-    text height = \heightof{ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmopqrstuvwxyz0123456789},
-    text depth = \depthof{ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmopqrstuvwxyz0123456789},
+    text height = height("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmopqrstuvwxyz0123456789"),
+    text depth = depth("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmopqrstuvwxyz0123456789"),
     % scaling factor of nodes; nodes have to be scaled independently from the
     % whole tikzpicture (at least in some cases)
     scale = 1
@@ -193,7 +193,7 @@
 %
 % Naming schema: l#2-n#3-p#1
 %
-% Arguments:	
+% Arguments:
 %   #1 ...  The pointer number, e.g. if #1 is 2, the pointer nodes third part of
 %           the name is '-p2'
 %   #2 ...  The level number, e.g. if #2 is 3, the nodes first part of the name
@@ -326,7 +326,7 @@
 % children of a given (destination level) with an arrow (solid). This only works
 % if the nodes of the B+ tree are named like mentioned in the
 % \@create@key@matrix@node and \@create@pointer@matrix@node, respectively.
-%	
+%
 % Arguments:
 %   #1 ...  Number of source (tree) level
 %   #2 ...  Number of source node (parent node)
