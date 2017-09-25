@@ -5,7 +5,7 @@
 % the necessary steps to create and modify B+ trees, i.e. which macros/styles
 % have to be used/modified.
 %
-% All sections and subsections provide a header describing what has to be done 
+% All sections and subsections provide a header describing what has to be done
 % and why. Each (sub-)section contains exactly a single tikzpicture containing
 % inline comments to describe single parts of the header description.
 %
@@ -16,6 +16,7 @@
 \documentclass{article}
 
 \usepackage{hyperref}
+\usepackage[german]{babel}
 
 % Use btreevis package.
 \usepackage{btreevis}
@@ -28,15 +29,15 @@
   % Create an intially empty B+ tree with one node containing 3 key cells and
   % 4 pointer cells.
   %%%
-  \section{Initial B$^+$ tree}  
+  \section{Initial B$^+$ tree}
   \begin{center}
   \begin{tikzpicture}[
     BTreeDefault,             % Use default B+ tree style.
     scale = 1                 % No scaling necessary.
-  ] 
+  ]
     % Set number of pointers per node (this should be done always upfront).
     \SetNoOfPoinersPerNode{4}
-  
+
     % Generate (empty) content of (tree) level 0 (root level).
     \CreateBTreeNode{0}{1}{{}}{\levelZeroNodeOne}
 
@@ -59,21 +60,21 @@
   %%%
   % Values 3 and 9 are added to the existing (empty) node.
   % Hence, the node is neither full before nor after the inserts.
-  % 
+  %
   % This is probably the easiest thing to do: we simply add the values 3 and 9
   % to the comma-separated list of values (which is empty by now) as third
   % argument of the \CreateBTreeNode macro. The third values is treated as empty
   % and thus the cell will also have no content in it.
-  %%% 
+  %%%
   \subsection{Insert 3 and 9}
   \begin{center}
   \begin{tikzpicture}[
     BTreeDefault,             % Use default B+ tree style.
     scale = 1                 % No scaling necessary.
-  ] 
+  ]
     % Set number of pointers per node (this should be done always upfront).
     \SetNoOfPoinersPerNode{4}
-  
+
     % Generate content of (tree) level 0 (root level).
     % Here we add 3 and 9 to the comma-separated list, i.e. {3, 9}.
     \CreateBTreeNode{0}{1}{{3, 9}}{\levelZeroNodeOne}
@@ -98,10 +99,10 @@
   \begin{tikzpicture}[
     BTreeDefault,             % Use default B+ tree style.
     scale = 1                 % No scaling necessary.
-  ] 
+  ]
     % Set number of pointers per node (this should be done always upfront).
     \SetNoOfPoinersPerNode{4}
-  
+
     % Generate content of (tree) level 0 (root level).
     % Here we add 10 to the comma-separated list, i.e. {3, 9, 10}.
     \CreateBTreeNode{0}{1}{{3, 9, 10}}{\levelZeroNodeOne}
@@ -120,7 +121,7 @@
   % level to the tree.
   %
   % Several things have to be done:
-  %   - Add two new calls of the \CreateBTreeNode macro to generate a total of 
+  %   - Add two new calls of the \CreateBTreeNode macro to generate a total of
   %     three node contents: one root node and its two child nodes.
   %   - When generating the tree, we need two new 'child' clauses to utilize the
   %     tree environment of TikZ to position the nodes properly. We use the newly
@@ -140,10 +141,10 @@
       sibling distance = 8em,
       level distance = 6em
     }
-  ] 
+  ]
     % Set number of pointers per node (this should be done always upfront).
     \SetNoOfPoinersPerNode{4}
-  
+
     % Generate content of (tree) level 0 (root level).
     % Here we just have a single value (9) in the comma-separated list because
     % we only have two subsequent nodes.
@@ -216,10 +217,10 @@
       sibling distance = 8em,
       level distance = 6em
     }
-  ] 
+  ]
     % Set number of pointers per node (this should be done always upfront).
     \SetNoOfPoinersPerNode{4}
-  
+
     % Generate content of (tree) level 0 (root level).
     % Here we have to add a value (3) to the comma-separated list.
     \CreateBTreeNode{0}{1}{{3, 9}}{\levelZeroNodeOne}
@@ -296,10 +297,10 @@
       sibling distance = 7em, % Smaller distance betweens siblings.
       level distance = 8em    % Larger distance between levels.
     }
-  ] 
+  ]
     % Set number of pointers per node (this should be done always upfront).
     \SetNoOfPoinersPerNode{4}
-  
+
     % Generate content of (tree) level 0 (root level).
     % Here we have to add a value (5) to the comma-separated list.
     \CreateBTreeNode{0}{1}{{3, 5, 9}}{\levelZeroNodeOne}
@@ -412,10 +413,10 @@
       BTreeNodeDefault,       % Uses the predefined B+ tree node style.
       nodes = { scale = 0.7 } % Scales all nodes to 0.7.
     }
-  ] 
+  ]
     % Set number of pointers per node (this should be done always upfront).
     \SetNoOfPoinersPerNode{4}
-  
+
     % Generate content of (tree) level 0 (root level).
     % Because a new level is added, the root has to hold the smallest value of
     % its right subtree, i.e. 5.
@@ -544,10 +545,10 @@
       BTreeNodeDefault,
       nodes = { scale = 0.7 }
     }
-  ] 
+  ]
     % Set number of pointers per node (this should be done always upfront).
     \SetNoOfPoinersPerNode{4}
-  
+
     % Generate content of (tree) level 0 (root level).
     % No modifications to the root node.
     \CreateBTreeNode{0}{1}{{5}}{\levelZeroNodeOne}
@@ -630,7 +631,7 @@
   %   - The \ConnectBTreeNodes and \ConnectBTreeLeaves calls need not to be
   %     changed because the number of nodes does not change, only their
   %     values.
-  %   - As before the tikzpicture options are not altered (not obligatory). 
+  %   - As before the tikzpicture options are not altered (not obligatory).
   %%%
   \subsection{Delete 10}
   \begin{center}
@@ -649,10 +650,10 @@
       BTreeNodeDefault,
       nodes = { scale = 0.7 }
     }
-  ] 
+  ]
     % Set number of pointers per node (this should be done always upfront).
     \SetNoOfPoinersPerNode{4}
-  
+
     % Generate content of (tree) level 0 (root level).
     % No modifications to the root node.
     \CreateBTreeNode{0}{1}{{5}}{\levelZeroNodeOne}
@@ -754,10 +755,10 @@
       sibling distance = 8em, % Smaller distance betweens siblings.
       level distance = 8em    % Larger distance between levels.
     },
-  ] 
+  ]
     % Set number of pointers per node (this should be done always upfront).
     \SetNoOfPoinersPerNode{4}
-  
+
     % Generate content of (tree) level 0 (root level).
     % Here we just need to change to the comma-separated list to contain 3 and 5.
     \CreateBTreeNode{0}{1}{{3, 5}}{\levelZeroNodeOne}
